@@ -25,7 +25,17 @@ bus.write_byte_data(DEV_ADDR, PWR_MGMT_1, 0)
 ## udp setting
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_ip = "000.000.00.000"
+server_port = 50008
 
+## connection check
+while True:
+    try:
+        s.connect((server_ip, server_port))
+        s.close()
+        print("connection success")
+        break
+    except socket.error:
+        print("connection failed")
 
 def read_word(adr):
     high = bus.read_byte_data(DEV_ADDR, adr)
@@ -76,7 +86,7 @@ with open("pitching.log", "w") as f:
             print ("sumVec = {0:4.3f}".format(sumVec))
             if sumVec > 20 and status is 1:
                 print("pitching!!!!!")
-                s.sendto(b'pitching', (server_ip, 50007))
+                s.sendto(b'pitching', (server_ip, server_port))
                 status = 0
 
             if status is 0:
@@ -85,7 +95,7 @@ with open("pitching.log", "w") as f:
                     if readyCount is 50:
                         status = 1
                         print("Ready")
-                        s.sendto(b'ready', (server_ip, 50007))
+                        s.sendto(b'ready', (server_ip, server_port))
                         readyCount = 0
 
             sleep(0.05)
