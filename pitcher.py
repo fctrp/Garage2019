@@ -85,6 +85,7 @@ with open("pitching.log", "w") as f:
                     if readyCount is 50:
                         status = 1
                         print("Ready")
+                        s.sendto(b'ready', (server_ip, 50007))
                         readyCount = 0
 
             sleep(0.05)
