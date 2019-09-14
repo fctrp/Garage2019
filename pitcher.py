@@ -31,7 +31,6 @@ server_port = 50008
 while True:
     try:
         s.connect((server_ip, server_port))
-        s.close()
         print("connection success")
         break
     except socket.error:
